@@ -1,7 +1,7 @@
 !(bind! &demandSpace  (new-space))
 
-
-(= (e))
+;;An Example of the demand
+;; (demand $demandName $demandValue)
 (= (addDemand $demandSpace $demand)
   (if (existsIn $demandSpace $demand)
       ("This demand exists in the atomspace")

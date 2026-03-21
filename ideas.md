@@ -27,3 +27,5 @@ The implementation of the modulators will be the same as the old implementation 
 ```
 
 The modulators benefits from type checking because it will be beneficial check whether the max threshold has been reached. Then we might need to change the values to vectors as ben proposed. This can benefit from matrix based computations like `broadcasting` or if they are needed for embeddings. In addition they might serve as priors for decisions in bayesian reasoning.
+
+The goals should be placed explicitly, instead of placing them in a cognitive schema which is a complete `IMPLICATION_LINK` relationship, we just tabulate the goals an agent could have. Maybe a perception module (or mind-agent) in minsky's terminology can be used to derive new goals based on perceived outputs.

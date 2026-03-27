@@ -28,4 +28,20 @@ The implementation of the modulators will be the same as the old implementation 
 
 The modulators benefits from type checking because it will be beneficial check whether the max threshold has been reached. Then we might need to change the values to vectors as ben proposed. This can benefit from matrix based computations like `broadcasting` or if they are needed for embeddings. In addition they might serve as priors for decisions in bayesian reasoning.
 
-The goals should be placed explicitly, instead of placing them in a cognitive schema which is a complete `IMPLICATION_LINK` relationship, we just tabulate the goals an agent could have. Maybe a perception module (or mind-agent) in minsky's terminology can be used to derive new goals based on perceived outputs.
+The goals should be placed explicitly, instead of placing them in a cognitive schema which is a complete `IMPLICATION_LINK` relationship, we just tabulate the goals an agent could have. Maybe a perception module (or mind-agent) in minsky's terminology can be used to derive new goals based on perceived outcomes. The goals can have stv values, which in turn be used to modify the belief of the goals the agent has on them.
+
+```scheme
+(: goalType Type)
+(: Goal (-> Number Number goalType))
+
+```
+
+## How should we represent condition rules?
+
+Condition rules are used for to satisify a certain specification has been matched or not. So the condition rules should be represented in such a way that a modulator takes a certain value.
+
+```scheme
+(: conditionType Type)
+(: condition (-> modulatorType|demand Number relType conditionType))
+
+```

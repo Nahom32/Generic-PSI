@@ -41,6 +41,8 @@ The goals should be placed explicitly, instead of placing them in a cognitive sc
 Condition rules are used for to satisify a certain specification has been matched or not. So the condition rules should be represented in such a way that a modulator takes a certain value.
 
 ```scheme
+(: relType Type)
+(: relation (-> Symbol relType))
 (: conditionType Type)
 (: condition (-> modulatorType|demand Number relType conditionType))
 

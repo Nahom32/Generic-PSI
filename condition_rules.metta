@@ -20,9 +20,11 @@
 (= (checkValue $nodeValue $threshold lt)
     (< $nodeValue $threshold)
 )
+
+(: executeConditionRule (-> Expression Bool))
 (= (executeConditionRule $conditionRule)
     (let* (
-        ((condition $substrate $condValue $relation) $conditionRule)
+        ((condition  $conditionId $substrate $condValue $relation) $conditionRule)
         ((relation $relVal) $relation)
         ($type (extractType $substrate))
 
@@ -38,4 +40,7 @@
             ($_ False)
         )
     )
-))
+  )
+)
+
+

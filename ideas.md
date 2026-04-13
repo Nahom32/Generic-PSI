@@ -39,11 +39,14 @@ The goals should be placed explicitly, instead of placing them in a cognitive sc
 ## How should we represent condition rules?
 
 Condition rules are used for to satisify a certain specification has been matched or not. So the condition rules should be represented in such a way that a modulator takes a certain value.
+But each rule should have some kind of an id to implement relationship otherwise it won't work. Especially if you want to build something in which conditions are related and effect functions are related to new function
 
 ```scheme
 (: relType Type)
 (: relation (-> Symbol relType))
 (: conditionType Type)
-(: condition (-> modulatorType|demand Number relType conditionType))
+(: condition (-> Number modulatorType|demand Number relType conditionType))
 
 ```
+
+So the relationship between effect functions and condition rules should be specified right? So how can we do that? Because we should find a way to relate the conditions and effect functions.

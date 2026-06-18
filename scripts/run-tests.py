@@ -54,6 +54,11 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Exit successfully when no matching MeTTa test files are found.",
     )
+    parser.add_argument(
+        "--allow-empty-test-files",
+        action="store_true",
+        help="Treat matching MeTTa test files with no !(test ...) forms as skipped.",
+    )
     return parser.parse_args()
 
 
@@ -146,6 +151,7 @@ def output_tail(output: str, max_lines: int = 80) -> str:
 def summarize_result(
     path: pathlib.Path,
     result: subprocess.CompletedProcess[str],
+    allow_empty_test_files: bool,
 ) -> tuple[bool, str]:
     output = "\n".join(part for part in (result.stdout, result.stderr) if part)
     expected_tests = count_test_forms(path)
@@ -166,6 +172,9 @@ def summarize_result(
             False,
             f"expected {expected_tests} test marker(s), saw {passed}",
         )
+
+    if expected_tests == 0 and passed == 0 and allow_empty_test_files:
+        return True, "skipped empty test file"
 
     if expected_tests == 0 and passed == 0:
         return False, "file matched test naming convention but produced no test markers"
@@ -221,7 +230,9 @@ def main() -> int:
                 print(f"FAIL {rel_test}: {message}")
                 continue
 
-            passed, message = summarize_result(test, result)
+            passed, message = summarize_result(
+                test, result, args.allow_empty_test_files
+            )
             print(f"{'PASS' if passed else 'FAIL'} {rel_test}: {message}")
 
             if not passed:

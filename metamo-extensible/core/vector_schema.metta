@@ -8,11 +8,15 @@
 
 (= (validDimensionKind $kind)
    (case $kind
-      ((goal True)
+      (
+      (goal True)
        (modulator True)
        (stimulus True)
        (actionFeature True)
-       ($other False))))
+       ($other False)
+      )
+    )
+)
 
 (= (schemaMember $item $items)
    (if (== $items ())
@@ -213,6 +217,8 @@
                (if (== (uniqueDimensionIndices $dimensions) False)
                    False
                    (contiguousDimensionIndices $dimensions))))))
+
+
 
 (= (valuesWithinDimensions $values $dimensions)
    (if (== $dimensions ())

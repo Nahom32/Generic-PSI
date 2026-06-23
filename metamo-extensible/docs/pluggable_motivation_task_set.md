@@ -43,7 +43,7 @@ Default instantiation
 
 ## 1. Kernel State And Vector Schema Registry
 
-- [ ] Implement `core/vector_schema.metta` with a first-class schema shape for
+- [x] Implement `core/vector_schema.metta` with a first-class schema shape for
       goals, modulators, stimuli, and action features.
 - [ ] Represent each dimension with at least:
       id, kind, index, bounds, default value, role tags, version, decay policy,

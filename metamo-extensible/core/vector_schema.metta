@@ -93,29 +93,29 @@
                False
                (valueWithinBounds $default $lower $upper)))))
 
-(= (dimensionIndex $schemaId $kind $id)
-   (match &self
+(= (dimensionIndex $schemaSpace $schemaId $kind $id)
+   (match $schemaSpace
       (Dimension $schemaId $kind $id $index $lower $upper $default $roles $version $decayPolicy $updateLimit $description)
       $index))
 
-(= (dimensionBounds $schemaId $kind $id)
-   (match &self
+(= (dimensionBounds $schemaSpace $schemaId $kind $id)
+   (match $schemaSpace
       (Dimension $schemaId $kind $id $index $lower $upper $default $roles $version $decayPolicy $updateLimit $description)
       (Bounds $lower $upper)))
 
-(= (dimensionDefault $schemaId $kind $id)
-   (match &self
+(= (dimensionDefault $schemaSpace $schemaId $kind $id)
+   (match $schemaSpace
       (Dimension $schemaId $kind $id $index $lower $upper $default $roles $version $decayPolicy $updateLimit $description)
       $default))
 
-(= (dimensionRoles $schemaId $kind $id)
-   (match &self
+(= (dimensionRoles $schemaSpace $schemaId $kind $id)
+   (match $schemaSpace
       (Dimension $schemaId $kind $id $index $lower $upper $default $roles $version $decayPolicy $updateLimit $description)
       $roles))
 
-(= (dimensionsByKind $schemaId $kind)
+(= (dimensionsByKind $schemaSpace $schemaId $kind)
    (collapse
-      (match &self
+      (match $schemaSpace
          (Dimension $schemaId $kind $id $index $lower $upper $default $roles $version $decayPolicy $updateLimit $description)
          (Dimension $schemaId $kind $id $index $lower $upper $default $roles $version $decayPolicy $updateLimit $description))))
 
@@ -124,17 +124,19 @@
       (Dimension $schemaId $kind $id $index $lower $upper $default $roles $version $decayPolicy $updateLimit $description))
    (if (schemaMember $role $roles)
        (Dimension $schemaId $kind $id $index $lower $upper $default $roles $version $decayPolicy $updateLimit $description)
-       (empty)))
+       (empty)
+    )
+)
 
-(= (dimensionsByRole $schemaId $role)
+(= (dimensionsByRole $schemaSpace $schemaId $role)
    (collapse
       (dimensionIfRole $role
-         (match &self
+         (match $schemaSpace
             (Dimension $schemaId $kind $id $index $lower $upper $default $roles $version $decayPolicy $updateLimit $description)
             (Dimension $schemaId $kind $id $index $lower $upper $default $roles $version $decayPolicy $updateLimit $description)))))
 
-(= (schemaDimensionCount $schemaId $kind)
-   (length (dimensionsByKind $schemaId $kind)))
+(= (schemaDimensionCount $schemaSpace $schemaId $kind)
+   (length (dimensionsByKind $schemaSpace $schemaId $kind)))
 
 (= (dimensionIdInList $id $dimensions)
    (if (== $dimensions ())
@@ -208,7 +210,7 @@
    (contiguousDimensionIndicesFrom 0 (length $dimensions) $dimensions))
 
 (= (validateDimensionList $schemaId $kind $dimensions)
-   (if (== (allValidDimensions $dimensions) False)
+   (if (not (allValidDimensions $dimensions)) 
        False
        (if (== (allDimensionsMatchSchemaKind $schemaId $kind $dimensions) False)
            False
@@ -231,15 +233,15 @@
               (valuesWithinDimensions $values $tail)
               False))))
 
-(= (validateValuesForSchemaKind $schemaId $kind $values)
-   (let $dimensions (dimensionsByKind $schemaId $kind)
-      (if (== (length $values) (schemaDimensionCount $schemaId $kind))
+(= (validateValuesForSchemaKind $schemaSpace $schemaId $kind $values)
+   (let $dimensions (dimensionsByKind $schemaSpace $schemaId $kind)
+      (if (== (length $values) (schemaDimensionCount $schemaSpace $schemaId $kind))
           (if (validateDimensionList $schemaId $kind $dimensions)
               (valuesWithinDimensions $values $dimensions)
               False)
           False)))
 
-(= (validateMotivationState (MotivationState $schemaId $goalValues $modulatorValues))
-   (if (validateValuesForSchemaKind $schemaId goal $goalValues)
-       (validateValuesForSchemaKind $schemaId modulator $modulatorValues)
+(= (validateMotivationState $schemaSpace (MotivationState $schemaId $goalValues $modulatorValues))
+   (if (validateValuesForSchemaKind $schemaSpace $schemaId goal $goalValues)
+       (validateValuesForSchemaKind $schemaSpace $schemaId modulator $modulatorValues)
        False))

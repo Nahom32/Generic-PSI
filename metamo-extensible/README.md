@@ -26,6 +26,20 @@ Domain observation
   -> audit log
 ```
 
+```mermaid
+flowchart TD
+    observation[Domain observation] --> stimulusAdapter[Stimulus adapter]
+    stimulusAdapter --> stimulusVector[Registered stimulus vector]
+    stimulusVector --> extensions[Appraisal, decision, safety, and neural extensions]
+    extensions --> proposalBus[Proposal bus]
+    proposalBus --> proposalValidation[Proposal validation]
+    proposalValidation --> merge[Merge]
+    merge --> safetyProjection[Safety projection]
+    safetyProjection --> blend[Incremental embodiment / state blend]
+    blend --> commit[Commit]
+    commit --> auditLog[Audit log]
+```
+
 The default instantiation is expected to be:
 
 ```text
@@ -39,6 +53,37 @@ OpenPsi modulators
 That instantiation should be registered through schemas and manifests. Its
 concrete names, such as OpenPsi modulators or MAGUS goal labels, should not leak
 into generic kernel modules.
+
+```mermaid
+flowchart LR
+    subgraph GenericKernel[Generic MetaMo kernel]
+        registry[Vector schema registry]
+        extensionApi[Extension API]
+        bus[Proposal bus]
+        mergeKernel[Merge kernel]
+        safetyKernel[Safety kernel]
+        audit[Audit / replay / migration]
+    end
+
+    subgraph DefaultInstantiation[Default OpenPsi / MAGUS instantiation]
+        openpsi[OpenPsi modulators]
+        magus[MAGUS-style goals]
+        research[Research-assistant stimuli/actions]
+        appraisal[OpenPsi appraisal extension]
+        decision[MAGUS decision extension]
+    end
+
+    openpsi --> registry
+    magus --> registry
+    research --> registry
+    appraisal --> extensionApi
+    decision --> extensionApi
+    registry --> bus
+    extensionApi --> bus
+    bus --> mergeKernel
+    mergeKernel --> safetyKernel
+    safetyKernel --> audit
+```
 
 ## Core Concepts
 

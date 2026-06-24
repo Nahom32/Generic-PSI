@@ -16,7 +16,7 @@
        ((Schema registry-schema v1 "Registry test schema")))
 !(test (schemaIdOf (Schema registry-schema v1 "Registry test schema")) registry-schema)
 !(test (schemaVersionOf (Schema registry-schema v1 "Registry test schema")) v1)
-!(test (schemaDescriptionOf (Schema registry-schema v1 "Registry test schema")) "Registry test schema")
+!mtest (schemaDescriptionOf (Schema registry-schema v1 "Registry test schema")) "Registry test schema")
 
 !(test (dimensionById &registrySpace registry-schema goal safety)
        (Dimension registry-schema goal safety 0 0.0 1.0 0.5 (safety-overgoal) v1 none 0.20 "Safety overgoal"))

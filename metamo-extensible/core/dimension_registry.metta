@@ -9,6 +9,9 @@
 ;; Dimension records are intentionally the same shape as core/vector_schema.metta.
 ;; This module adds schema registration, registry-level lookup, and declaration
 ;; checks for plugins that consume stimulus or action-feature dimensions.
+;; (Schema registry-schema v1 "Registry test schema")
+;;(: SchemaType Type)
+(: Schema (-> Symbol Symbol String))
 
 (= (schemaIdOf (Schema $schemaId $version $description))
    $schemaId)

@@ -6,6 +6,9 @@
 ;; Supported kinds are:
 ;; goal, modulator, stimulus, actionFeature
 
+(: DimensionType Type)
+(: Dimension (-> Symbol Symbol Symbol Number Number Number Number Expression Symbol Symbol Number String DimensionType ))
+
 (= (validDimensionKind $kind)
    (case $kind
       (
@@ -32,7 +35,10 @@
        False
        (if (> $value $upper)
            False
-           True)))
+           True
+        )
+    )
+)
 
 (= (dimensionSchemaId
       (Dimension $schemaId $kind $id $index $lower $upper $default $roles $version $decayPolicy $updateLimit $description))

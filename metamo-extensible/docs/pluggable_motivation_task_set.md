@@ -45,12 +45,12 @@ Default instantiation
 
 - [x] Implement `core/vector_schema.metta` with a first-class schema shape for
       goals, modulators, stimuli, and action features.
-- [ ] Represent each dimension with at least:
+- [x] Represent each dimension with at least:
       id, kind, index, bounds, default value, role tags, version, decay policy,
       update limit, and description.
-- [ ] Implement `core/dimension_registry.metta` for registering schemas and
+- [x] Implement `core/dimension_registry.metta` for registering schemas and
       querying dimensions by id, kind, index, and role.
-- [ ] Add schema validators for duplicate ids, duplicate indices, non-contiguous
+- [x] Add schema validators for duplicate ids, duplicate indices, non-contiguous
       indices, invalid bounds, missing defaults, and invalid role tags.
 - [ ] Add state validators for `X = G x M`:
       vector length, numeric values, per-dimension bounds, and schema id.

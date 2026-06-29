@@ -38,6 +38,14 @@
       ((Dimension registry-schema goal safety 0 0.0 1.0 0.5 (safety-overgoal) v1 none 0.20 "Safety overgoal")
        (Dimension registry-schema goal curiosity 0 0.0 1.0 0.3 (growth-overgoal) v1 none 0.20 "Duplicate index")))
    False)
+!(test
+   (validateSchemaDimensions registry-schema
+      ((Dimension registry-schema goal safety 0 0.0 1.0 0.5 (invalid-role) v1 none 0.20 "Invalid role")))
+   False)
+!(test
+   (registerDimension &registrySpace
+      (Dimension registry-schema goal invalidRoleGoal 2 0.0 1.0 0.5 (invalid-role) v1 none 0.20 "Invalid role"))
+   (InvalidDimension registry-schema goal invalidRoleGoal))
 
 !(test (validateStimulusDimensions &registrySpace registry-schema (risk)) True)
 !(test (validateStimulusDimensions &registrySpace registry-schema (risk missingStimulus)) False)
@@ -46,5 +54,7 @@
 
 !(test (validateStimulusVector &registrySpace registry-schema (0.8)) True)
 !(test (validateStimulusVector &registrySpace registry-schema (1.8)) False)
+!(test (validateStimulusVector &registrySpace missing-schema ()) False)
 !(test (validateActionFeatureVector &registrySpace registry-schema (0.8)) True)
 !(test (validateActionFeatureVector &registrySpace registry-schema (1.8)) False)
+!(test (validateActionFeatureVector &registrySpace missing-schema ()) False)

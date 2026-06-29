@@ -52,7 +52,7 @@ Default instantiation
       querying dimensions by id, kind, index, and role.
 - [x] Add schema validators for duplicate ids, duplicate indices, non-contiguous
       indices, invalid bounds, missing defaults, and invalid role tags.
-- [ ] Add state validators for `X = G x M`:
+- [x] Add state validators for `X = G x M`:
       vector length, numeric values, per-dimension bounds, and schema id.
 - [ ] Add stimulus and action-feature validators so plugins cannot consume or
       emit undeclared dimensions.

@@ -26,6 +26,13 @@
 
 !(test (schemaMember safety-overgoal (safety-overgoal ethical-guard)) True)
 !(test (schemaMember social-drive (safety-overgoal ethical-guard)) False)
+!(test (validRoleTag safety-overgoal) True)
+!(test (validRoleTag growth-overgoal) True)
+!(test (validRoleTag caution-modulator) True)
+!(test (validRoleTag invalid-role) False)
+!(test (validRoleTags (safety-overgoal ethical-guard novelty-signal)) True)
+!(test (validRoleTags (safety-overgoal invalid-role)) False)
+!(test (validRoleTags ()) True)
 
 !(test (valueWithinBounds 0.5 0.0 1.0) True)
 !(test (valueWithinBounds -0.1 0.0 1.0) False)
@@ -45,11 +52,12 @@
 !(test (dimensionHasRole (Dimension s goal g 0 0.0 1.0 0.5 (role other-role) v1 none 0.1 "d") other-role) True)
 !(test (dimensionHasRole (Dimension s goal g 0 0.0 1.0 0.5 (role) v1 none 0.1 "d") missing-role) False)
 
-!(test (validDimension (Dimension s goal g 0 0.0 1.0 0.5 (role) v1 none 0.1 "d")) True)
+!(test (validDimension (Dimension s goal g 0 0.0 1.0 0.5 (safety-overgoal) v1 none 0.1 "d")) True)
 !(test (validDimension (Dimension s unsupportedKind g 0 0.0 1.0 0.5 (role) v1 none 0.1 "d")) False)
 !(test (validDimension (Dimension s goal g -1 0.0 1.0 0.5 (role) v1 none 0.1 "d")) False)
 !(test (validDimension (Dimension s goal g 0 1.0 0.0 0.5 (role) v1 none 0.1 "d")) False)
 !(test (validDimension (Dimension s goal g 0 0.0 1.0 1.5 (role) v1 none 0.1 "d")) False)
+!(test (validDimension (Dimension s goal g 0 0.0 1.0 0.5 (invalid-role) v1 none 0.1 "d")) False)
 
 !(test (dimensionIndex &schemaSpace test-schema goal safety) 0)
 !(test (dimensionBounds &schemaSpace test-schema modulator valence) (Bounds -1.0 1.0))
@@ -59,6 +67,10 @@
 !(test (schemaDimensionCount &schemaSpace test-schema modulator) 2)
 !(test (schemaDimensionCount &schemaSpace test-schema stimulus) 1)
 !(test (schemaDimensionCount &schemaSpace test-schema actionFeature) 1)
+!(test (schemaIdDeclared &schemaSpace test-schema) True)
+!(test (schemaIdDeclared &schemaSpace missing-schema) False)
+!(test (validateSchemaId &schemaSpace test-schema) True)
+!(test (validateSchemaId &schemaSpace missing-schema) False)
 !(test (dimensionsByRole &schemaSpace test-schema safety-overgoal)
        ((Dimension test-schema goal safety 0 0.0 1.0 0.5 (safety-overgoal) v1 none 0.20 "Safety overgoal")))
 !(test (dimensionsByRole &schemaSpace test-schema caution-modulator)
@@ -98,11 +110,18 @@
       ((Dimension test-schema goal safety 0 0.0 1.0 0.5 (safety-overgoal) v1 none 0.20 "Wrong kind")))
    False)
 
+!(test
+   (validateDimensionList test-schema goal
+      ((Dimension test-schema goal safety 0 0.0 1.0 0.5 (invalid-role) v1 none 0.20 "Invalid role")))
+   False)
+
 !(test (validateValuesForSchemaKind &schemaSpace test-schema goal (0.8 0.2)) True)
 !(test (validateValuesForSchemaKind &schemaSpace test-schema goal (1.2 0.2)) False)
 !(test (validateValuesForSchemaKind &schemaSpace test-schema goal (0.8)) False)
+!(test (validateValuesForSchemaKind &schemaSpace missing-schema goal ()) False)
 !(test (validateValuesForSchemaKind &schemaSpace test-schema modulator (0.0 0.8)) True)
 !(test (validateValuesForSchemaKind &schemaSpace test-schema modulator (-1.2 0.8)) False)
 
 !(test (validateMotivationState &schemaSpace  (MotivationState test-schema (0.8 0.2) (0.0 0.8))) True)
 !(test (validateMotivationState &schemaSpace (MotivationState test-schema (0.8 0.2) (0.0 1.8))) False)
+!(test (validateMotivationState &schemaSpace (MotivationState missing-schema () ())) False)

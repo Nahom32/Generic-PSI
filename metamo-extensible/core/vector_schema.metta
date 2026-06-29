@@ -30,6 +30,35 @@
                 True
                 (schemaMember $item $tail)))))
 
+(= (validRoleTag $role)
+   (case $role
+      (
+       (safety-overgoal True)
+       (growth-overgoal True)
+       (growth-goal True)
+       (caution-modulator True)
+       (exploration-modulator True)
+       (ethical-guard True)
+       (social-drive True)
+       (novelty-signal True)
+       (novelty-seeking True)
+       (risk-signal True)
+       (safety-margin True)
+       (score-feature True)
+       (affect True)
+       ($other False)
+      )
+   ))
+
+(= (validRoleTags $roles)
+   (if (== $roles ())
+       True
+       (let ($head $tail)
+            (decons-atom $roles)
+            (if (validRoleTag $head)
+                (validRoleTags $tail)
+                False))))
+
 (= (valueWithinBounds $value $lower $upper)
    (if (< $value $lower)
        False
@@ -97,7 +126,9 @@
            False
            (if (> $lower $upper)
                False
-               (valueWithinBounds $default $lower $upper)))))
+               (if (valueWithinBounds $default $lower $upper)
+                   (validRoleTags $roles)
+                   False)))))
 
 (= (dimensionIndex $schemaSpace $schemaId $kind $id)
    (match $schemaSpace
@@ -143,6 +174,18 @@
 
 (= (schemaDimensionCount $schemaSpace $schemaId $kind)
    (length (dimensionsByKind $schemaSpace $schemaId $kind)))
+
+(= (schemaDimensions $schemaSpace $schemaId)
+   (collapse
+      (match $schemaSpace
+         (Dimension $schemaId $kind $id $index $lower $upper $default $roles $version $decayPolicy $updateLimit $description)
+         (Dimension $schemaId $kind $id $index $lower $upper $default $roles $version $decayPolicy $updateLimit $description))))
+
+(= (schemaIdDeclared $schemaSpace $schemaId)
+   (not (== (schemaDimensions $schemaSpace $schemaId) ())))
+
+(= (validateSchemaId $schemaSpace $schemaId)
+   (schemaIdDeclared $schemaSpace $schemaId))
 
 (= (dimensionIdInList $id $dimensions)
    (if (== $dimensions ())
@@ -240,14 +283,18 @@
               False))))
 
 (= (validateValuesForSchemaKind $schemaSpace $schemaId $kind $values)
-   (let $dimensions (dimensionsByKind $schemaSpace $schemaId $kind)
-      (if (== (length $values) (schemaDimensionCount $schemaSpace $schemaId $kind))
-          (if (validateDimensionList $schemaId $kind $dimensions)
-              (valuesWithinDimensions $values $dimensions)
-              False)
-          False)))
+   (if (validateSchemaId $schemaSpace $schemaId)
+       (let $dimensions (dimensionsByKind $schemaSpace $schemaId $kind)
+          (if (== (length $values) (schemaDimensionCount $schemaSpace $schemaId $kind))
+              (if (validateDimensionList $schemaId $kind $dimensions)
+                  (valuesWithinDimensions $values $dimensions)
+                  False)
+              False))
+       False))
 
 (= (validateMotivationState $schemaSpace (MotivationState $schemaId $goalValues $modulatorValues))
-   (if (validateValuesForSchemaKind $schemaSpace $schemaId goal $goalValues)
-       (validateValuesForSchemaKind $schemaSpace $schemaId modulator $modulatorValues)
+   (if (validateSchemaId $schemaSpace $schemaId)
+       (if (validateValuesForSchemaKind $schemaSpace $schemaId goal $goalValues)
+           (validateValuesForSchemaKind $schemaSpace $schemaId modulator $modulatorValues)
+           False)
        False))

@@ -58,3 +58,63 @@
 !(test (validateActionFeatureVector &registrySpace registry-schema (0.8)) True)
 !(test (validateActionFeatureVector &registrySpace registry-schema (1.8)) False)
 !(test (validateActionFeatureVector &registrySpace missing-schema ()) False)
+
+!(bind! &versionedSchemaSpace (new-space))
+!(registerSchema &versionedSchemaSpace versioned-schema v1
+   ((Dimension versioned-schema goal safety 0 0.0 1.0 0.5 (safety-overgoal) v1 none 0.20 "Safety overgoal")
+    (Dimension versioned-schema stimulus risk 0 0.0 1.0 0.0 (risk-signal) v1 none 1.00 "Risk stimulus v1"))
+   "First schema")
+
+!(test
+   (registerSchema &versionedSchemaSpace versioned-schema v2
+      ((Dimension versioned-schema goal curiosity 0 0.0 1.0 0.3 (growth-overgoal) v2 none 0.20 "Curiosity goal")
+       (Dimension versioned-schema stimulus risk 0 0.0 2.0 0.0 (risk-signal) v2 none 1.00 "Risk stimulus v2"))
+      "Second schema")
+   (RegisteredSchema versioned-schema v2))
+!(test (schemaVersionRegistered &versionedSchemaSpace versioned-schema v1) True)
+!(test (schemaVersionRegistered &versionedSchemaSpace versioned-schema v2) True)
+!(test (schemaVersionRegistered &versionedSchemaSpace versioned-schema v3) False)
+!(test (schemaVersionRecords &versionedSchemaSpace versioned-schema v1)
+       ((Schema versioned-schema v1 "First schema")))
+!(test (schemaVersionRecords &versionedSchemaSpace versioned-schema v2)
+       ((Schema versioned-schema v2 "Second schema")))
+!(test (dimensionDeclaredVersion &versionedSchemaSpace versioned-schema v1 goal curiosity) False)
+!(test (dimensionDeclaredVersion &versionedSchemaSpace versioned-schema v2 goal curiosity) True)
+!(test (dimensionByIdVersion &versionedSchemaSpace versioned-schema v2 goal curiosity)
+       (Dimension versioned-schema goal curiosity 0 0.0 1.0 0.3 (growth-overgoal) v2 none 0.20 "Curiosity goal"))
+!(test (validateStimulusVectorVersion &versionedSchemaSpace versioned-schema v1 (1.5)) False)
+!(test (validateStimulusVectorVersion &versionedSchemaSpace versioned-schema v2 (1.5)) True)
+!(test (validateStimulusDimensionsVersion &versionedSchemaSpace versioned-schema v1 (risk)) True)
+!(test (validateStimulusDimensionsVersion &versionedSchemaSpace versioned-schema v1 (risk missingRisk)) False)
+!(test
+   (registerSchema &versionedSchemaSpace versioned-schema v1
+      ((Dimension versioned-schema goal duplicateSafety 0 0.0 1.0 0.5 (safety-overgoal) v1 none 0.20 "Duplicate schema version"))
+      "Duplicate first schema")
+   (SchemaAlreadyRegistered versioned-schema))
+!(test (dimensionDeclaredVersion &versionedSchemaSpace versioned-schema v1 goal duplicateSafety) False)
+
+!(bind! &versionMismatchSpace (new-space))
+!(test
+   (registerSchema &versionMismatchSpace mismatch-schema v2
+      ((Dimension mismatch-schema goal safety 0 0.0 1.0 0.5 (safety-overgoal) v1 none 0.20 "Wrong dimension version"))
+      "Version mismatch schema")
+   (InvalidSchema mismatch-schema))
+!(test (schemaVersionRegistered &versionMismatchSpace mismatch-schema v2) False)
+
+!(bind! &dimensionConflictSpace (new-space))
+!(registerDimension &dimensionConflictSpace
+   (Dimension conflict-schema goal safety 0 0.0 1.0 0.5 (safety-overgoal) v1 none 0.20 "Safety overgoal"))
+
+!(test
+   (registerSchema &dimensionConflictSpace conflict-schema v1
+      ((Dimension conflict-schema goal curiosity 0 0.0 1.0 0.3 (growth-overgoal) v1 none 0.20 "Curiosity goal"))
+      "Index conflict schema")
+   (DimensionAlreadyRegistered conflict-schema goal curiosity))
+!(test (schemaRegistered &dimensionConflictSpace conflict-schema) False)
+!(test (schemaRecords &dimensionConflictSpace conflict-schema) ())
+!(test
+   (registerSchema &dimensionConflictSpace conflict-schema v2
+      ((Dimension conflict-schema goal curiosity 0 0.0 1.0 0.3 (growth-overgoal) v2 none 0.20 "Curiosity goal"))
+      "Non-conflicting schema version")
+   (RegisteredSchema conflict-schema v2))
+!(test (schemaVersionRegistered &dimensionConflictSpace conflict-schema v2) True)

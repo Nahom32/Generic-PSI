@@ -362,6 +362,38 @@
 (= (validateActionFeatureDimensionsVersion $registrySpace $schemaId $version $ids)
    (validateDeclaredDimensionsVersion $registrySpace $schemaId $version actionFeature $ids))
 
+(= (validatePluginStimulusInputs $registrySpace $schemaId $ids)
+   (validateStimulusDimensions $registrySpace $schemaId $ids))
+
+(= (validatePluginStimulusInputsVersion $registrySpace $schemaId $version $ids)
+   (validateStimulusDimensionsVersion $registrySpace $schemaId $version $ids))
+
+(= (validatePluginActionFeatureOutputs $registrySpace $schemaId $ids)
+   (validateActionFeatureDimensions $registrySpace $schemaId $ids))
+
+(= (validatePluginActionFeatureOutputsVersion $registrySpace $schemaId $version $ids)
+   (validateActionFeatureDimensionsVersion $registrySpace $schemaId $version $ids))
+
+(= (validatePluginDimensionContract $registrySpace $schemaId $stimulusInputIds $actionFeatureOutputIds)
+   (if (validatePluginStimulusInputs $registrySpace $schemaId $stimulusInputIds)
+       (validatePluginActionFeatureOutputs $registrySpace $schemaId $actionFeatureOutputIds)
+       False))
+
+(= (validatePluginDimensionContractVersion $registrySpace $schemaId $version $stimulusInputIds $actionFeatureOutputIds)
+   (if (validatePluginStimulusInputsVersion $registrySpace $schemaId $version $stimulusInputIds)
+       (validatePluginActionFeatureOutputsVersion $registrySpace $schemaId $version $actionFeatureOutputIds)
+       False))
+
+(= (validatePluginDimensionContract
+      $registrySpace
+      (PluginDimensionContract $schemaId $stimulusInputIds $actionFeatureOutputIds))
+   (validatePluginDimensionContract $registrySpace $schemaId $stimulusInputIds $actionFeatureOutputIds))
+
+(= (validatePluginDimensionContractVersion
+      $registrySpace
+      (PluginDimensionContract $schemaId $version $stimulusInputIds $actionFeatureOutputIds))
+   (validatePluginDimensionContractVersion $registrySpace $schemaId $version $stimulusInputIds $actionFeatureOutputIds))
+
 (= (validateStimulusVector $registrySpace $schemaId $values)
    (validateValuesForSchemaKind $registrySpace $schemaId stimulus $values))
 

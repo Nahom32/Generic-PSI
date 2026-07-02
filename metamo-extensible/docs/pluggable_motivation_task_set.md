@@ -54,7 +54,7 @@ Default instantiation
       indices, invalid bounds, missing defaults, and invalid role tags.
 - [x] Add state validators for `X = G x M`:
       vector length, numeric values, per-dimension bounds, and schema id.
-- [ ] Add stimulus and action-feature validators so plugins cannot consume or
+- [x] Add stimulus and action-feature validators so plugins cannot consume or
       emit undeclared dimensions.
 - [ ] Preserve compatibility with the simple `open-psi/` atom forms:
       `(modulator name value)`, `(demand name min max result)`, and future

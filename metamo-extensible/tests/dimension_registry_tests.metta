@@ -51,6 +51,18 @@
 !(test (validateStimulusDimensions &registrySpace registry-schema (risk missingStimulus)) False)
 !(test (validateActionFeatureDimensions &registrySpace registry-schema (expectedUtility)) True)
 !(test (validateActionFeatureDimensions &registrySpace registry-schema (expectedUtility missingFeature)) False)
+!(test (validatePluginStimulusInputs &registrySpace registry-schema (risk)) True)
+!(test (validatePluginStimulusInputs &registrySpace registry-schema (risk missingStimulus)) False)
+!(test (validatePluginActionFeatureOutputs &registrySpace registry-schema (expectedUtility)) True)
+!(test (validatePluginActionFeatureOutputs &registrySpace registry-schema (expectedUtility missingFeature)) False)
+!(test (validatePluginDimensionContract &registrySpace registry-schema (risk) (expectedUtility)) True)
+!(test (validatePluginDimensionContract &registrySpace registry-schema (risk missingStimulus) (expectedUtility)) False)
+!(test (validatePluginDimensionContract &registrySpace registry-schema (risk) (expectedUtility missingFeature)) False)
+!(test
+   (validatePluginDimensionContract
+      &registrySpace
+      (PluginDimensionContract registry-schema (risk) (expectedUtility)))
+   True)
 
 !(test (validateStimulusVector &registrySpace registry-schema (0.8)) True)
 !(test (validateStimulusVector &registrySpace registry-schema (1.8)) False)
@@ -62,13 +74,15 @@
 !(bind! &versionedSchemaSpace (new-space))
 !(registerSchema &versionedSchemaSpace versioned-schema v1
    ((Dimension versioned-schema goal safety 0 0.0 1.0 0.5 (safety-overgoal) v1 none 0.20 "Safety overgoal")
-    (Dimension versioned-schema stimulus risk 0 0.0 1.0 0.0 (risk-signal) v1 none 1.00 "Risk stimulus v1"))
+    (Dimension versioned-schema stimulus risk 0 0.0 1.0 0.0 (risk-signal) v1 none 1.00 "Risk stimulus v1")
+    (Dimension versioned-schema actionFeature expectedUtility 0 -1.0 1.0 0.0 (score-feature) v1 none 1.00 "Expected utility v1"))
    "First schema")
 
 !(test
    (registerSchema &versionedSchemaSpace versioned-schema v2
       ((Dimension versioned-schema goal curiosity 0 0.0 1.0 0.3 (growth-overgoal) v2 none 0.20 "Curiosity goal")
-       (Dimension versioned-schema stimulus risk 0 0.0 2.0 0.0 (risk-signal) v2 none 1.00 "Risk stimulus v2"))
+       (Dimension versioned-schema stimulus risk 0 0.0 2.0 0.0 (risk-signal) v2 none 1.00 "Risk stimulus v2")
+       (Dimension versioned-schema actionFeature expectedUtility 0 -2.0 2.0 0.0 (score-feature) v2 none 1.00 "Expected utility v2"))
       "Second schema")
    (RegisteredSchema versioned-schema v2))
 !(test (schemaVersionRegistered &versionedSchemaSpace versioned-schema v1) True)
@@ -86,6 +100,18 @@
 !(test (validateStimulusVectorVersion &versionedSchemaSpace versioned-schema v2 (1.5)) True)
 !(test (validateStimulusDimensionsVersion &versionedSchemaSpace versioned-schema v1 (risk)) True)
 !(test (validateStimulusDimensionsVersion &versionedSchemaSpace versioned-schema v1 (risk missingRisk)) False)
+!(test (validatePluginStimulusInputsVersion &versionedSchemaSpace versioned-schema v1 (risk)) True)
+!(test (validatePluginStimulusInputsVersion &versionedSchemaSpace versioned-schema v1 (risk missingRisk)) False)
+!(test (validatePluginActionFeatureOutputsVersion &versionedSchemaSpace versioned-schema v1 (expectedUtility)) True)
+!(test (validatePluginActionFeatureOutputsVersion &versionedSchemaSpace versioned-schema v1 (expectedUtility missingFeature)) False)
+!(test (validatePluginDimensionContractVersion &versionedSchemaSpace versioned-schema v1 (risk) (expectedUtility)) True)
+!(test (validatePluginDimensionContractVersion &versionedSchemaSpace versioned-schema v1 (risk missingRisk) (expectedUtility)) False)
+!(test (validatePluginDimensionContractVersion &versionedSchemaSpace versioned-schema v1 (risk) (expectedUtility missingFeature)) False)
+!(test
+   (validatePluginDimensionContractVersion
+      &versionedSchemaSpace
+      (PluginDimensionContract versioned-schema v1 (risk) (expectedUtility)))
+   True)
 !(test
    (registerSchema &versionedSchemaSpace versioned-schema v1
       ((Dimension versioned-schema goal duplicateSafety 0 0.0 1.0 0.5 (safety-overgoal) v1 none 0.20 "Duplicate schema version"))

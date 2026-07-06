@@ -62,7 +62,7 @@ Default instantiation
 
 ## 2. OpenPsi/MAGUS Default Instantiation
 
-- [ ] Populate `schemas/openpsi_modulators_v1.metta` with the six OpenPsi
+- [x] Populate `schemas/openpsi_modulators_v1.metta` with the six OpenPsi
       modulators: valence, arousal, approach, resolution, threshold, securing.
 - [ ] Populate `schemas/magus_goals_v1.metta` with the default MAGUS/OpenPsi
       goal layout, including individuation and transcendence overgoals.

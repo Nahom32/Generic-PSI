@@ -62,10 +62,7 @@
 (= (valueWithinBounds $value $lower $upper)
    (if (< $value $lower)
        False
-       (if (> $value $upper)
-           False
-           True
-        )
+       (< $value $upper)
     )
 )
 

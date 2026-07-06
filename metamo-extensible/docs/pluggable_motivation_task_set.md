@@ -25,16 +25,16 @@ Default instantiation
 
 ## 0. Repository Baseline And Source Of Truth
 
-- [ ] Decide whether `metamo-extensible/` is the new canonical MetaMo substrate
+- [x] Decide whether `metamo-extensible/` is the new canonical MetaMo substrate
       and `open-psi/` is legacy input, or whether both should remain active
       implementations.
-- [ ] Add a short architecture note documenting that decision.
-- [ ] Keep the existing `open-psi/` goal, modulator, demand, condition-rule, and
+- [x] Add a short architecture note documenting that decision.
+- [x] Keep the existing `open-psi/` goal, modulator, demand, condition-rule, and
       utility code readable during migration.
-- [ ] Treat empty files in `metamo-extensible/core/`, `schemas/`,
+- [x] Treat empty files in `metamo-extensible/core/`, `schemas/`,
       `extensions/`, `domains/`, and `tests/` as reserved module boundaries, not
       completed implementations.
-- [ ] Define the minimum runnable demo for the first milestone:
+- [x] Define the minimum runnable demo for the first milestone:
       register schemas, load OpenPsi/MAGUS extensions, accept a stimulus, emit
       proposals, merge them, safety-project them, blend state, and log the
       transition.

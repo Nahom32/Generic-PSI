@@ -35,8 +35,15 @@
 !(test (dimensionDefault &openPsiGoalSchemaSpace openpsi-magus goal gCurio) 0.3)
 !(test (dimensionRoles &openPsiGoalSchemaSpace openpsi-magus goal gInd) (safety-overgoal))
 !(test (dimensionRoles &openPsiGoalSchemaSpace openpsi-magus goal gTrans) (growth-overgoal novelty-seeking))
+!(test (dimensionRoles &openPsiGoalSchemaSpace openpsi-magus goal gNovel) (growth-goal novelty-seeking novelty-signal))
 !(test (dimensionRoles &openPsiGoalSchemaSpace openpsi-magus goal gEthic) (ethical-guard))
 !(test (dimensionRoles &openPsiGoalSchemaSpace openpsi-magus goal gSoc) (social-drive))
+
+!(test (schemaHasRole &openPsiGoalSchemaSpace openpsi-magus safety-overgoal) True)
+!(test (schemaHasRole &openPsiGoalSchemaSpace openpsi-magus growth-overgoal) True)
+!(test (schemaHasRole &openPsiGoalSchemaSpace openpsi-magus novelty-signal) True)
+!(test (schemaHasRole &openPsiGoalSchemaSpace openpsi-magus ethical-guard) True)
+!(test (schemaHasRole &openPsiGoalSchemaSpace openpsi-magus social-drive) True)
 
 !(test
    (dimensionsByRole &openPsiGoalSchemaSpace openpsi-magus safety-overgoal)
@@ -50,6 +57,10 @@
    (dimensionsByKindRole &openPsiGoalSchemaSpace openpsi-magus goal social-drive)
    ((Dimension openpsi-magus goal gHelp 2 0.0 1.0 0.3 (growth-goal social-drive) v1 none 0.20 "Helpfulness")
     (Dimension openpsi-magus goal gSoc 7 0.0 1.0 0.3 (social-drive) v1 none 0.20 "Social drive")))
+
+!(test
+   (dimensionsByKindRole &openPsiGoalSchemaSpace openpsi-magus goal novelty-signal)
+   ((Dimension openpsi-magus goal gNovel 4 0.0 1.0 0.3 (growth-goal novelty-seeking novelty-signal) v1 none 0.20 "Novelty seeking")))
 
 !(test
    (registerSchema &openPsiGoalRegistrySpace (openPsiGoalSchemaId) (openPsiGoalSchemaVersion) (openPsiGoalDimensions) "OpenPsi/MAGUS goal schema")

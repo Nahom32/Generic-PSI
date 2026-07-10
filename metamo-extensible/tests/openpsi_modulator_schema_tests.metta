@@ -33,6 +33,9 @@
 !(test (dimensionRoles &openPsiModulatorSchemaSpace openpsi-magus modulator threshold) (caution-modulator))
 !(test (dimensionRoles &openPsiModulatorSchemaSpace openpsi-magus modulator securing) (caution-modulator))
 
+!(test (schemaHasRole &openPsiModulatorSchemaSpace openpsi-magus caution-modulator) True)
+!(test (schemaHasRole &openPsiModulatorSchemaSpace openpsi-magus exploration-modulator) True)
+
 !(test
    (dimensionsByRole &openPsiModulatorSchemaSpace openpsi-magus caution-modulator)
    ((Dimension openpsi-magus modulator threshold 4 0.0 1.0 0.5 (caution-modulator) v1 none 0.10 "Selection threshold")

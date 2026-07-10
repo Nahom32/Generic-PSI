@@ -64,16 +64,16 @@ Default instantiation
 
 - [x] Populate `schemas/openpsi_modulators_v1.metta` with the six OpenPsi
       modulators: valence, arousal, approach, resolution, threshold, securing.
-- [ ] Populate `schemas/magus_goals_v1.metta` with the default MAGUS/OpenPsi
+- [x] Populate `schemas/magus_goals_v1.metta` with the default MAGUS/OpenPsi
       goal layout, including individuation and transcendence overgoals.
 - [ ] Populate `schemas/research_assistant_stimuli_v1.metta` with the default
       stimulus dimensions from the critique: novelty, conduciveness, risk, and
       effort.
-- [ ] Assign role tags used by generic kernel logic:
+- [x] Assign role tags used by generic kernel logic:
       `safety-overgoal`, `growth-overgoal`, `caution-modulator`,
       `exploration-modulator`, `ethical-guard`, `social-drive`, and
       `novelty-signal`.
-- [ ] Implement `extensions/openpsi_appraisal/appraisal.metta` as the default
+- [x] Implement `extensions/openpsi_appraisal/appraisal.metta` as the default
       appraisal plugin over the registered stimulus and modulator schemas.
 - [ ] Implement `extensions/magus_decision/decision.metta` as the default
       decision plugin over the registered goal, modulator, and action schemas.

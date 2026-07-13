@@ -1,9 +1,11 @@
 !(import! &self ../core/dimension_registry)
+!(import! &self ../extensions/openpsi_appraisal/appraisal_helpers.metta)
 !(import! &self ../extensions/openpsi_appraisal/appraisal)
 !(import! &self ../schemas/magus_goals_v1)
 !(import! &self ../schemas/openpsi_modulators_v1)
 !(bind! &openPsiAppraisalRegistrySpace (new-space))
 !(bind! &openPsiMissingStimulusRegistrySpace (new-space))
+
 
 (= (openPsiAppraisalTestStimulusDimensions)
    ((Dimension openpsi-magus stimulus novelty 0 0.0 1.0 0.0 (novelty-signal) v1 none 1.00 "Novelty")
